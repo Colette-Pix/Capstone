@@ -4,24 +4,28 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0" />
     <link rel="stylesheet" href="../css/style.css" />
-    input[type="text"],
-    input[type="number"],
-    select {
-    background-color: rgba(130, 228, 12, 0.9);
-    color: rgb(0, 0, 0);
-    padding: 0.5rem;
-    border: none;
-    border-radius: 0.25rem;
-    font-size: 1rem;
-    cursor: pointer;
-    }
-
+    <style>
+        input[type="text"],
+        input[type="number"],
+        select {
+        background-color: rgba(130, 228, 12, 0.9);
+        color: rgb(0, 0, 0);
+        padding: 0.5rem;
+        border: none;
+        border-radius: 0.25rem;
+        font-size: 1rem;
+        cursor: pointer;
+        }
+    </style>
 </head>
 <body>
+<nav></nav>
     <form action="#" th:action="@{/access}" method="post">
         <label th:text="${passwordLabel}"></label><br>
         <input type="password" id="password" name="password"><br>
         <input type="submit" value="Submit">
     </form>
+    <script type="module" src="../js/nav.js">
+    </script>
 </body>
 </html>

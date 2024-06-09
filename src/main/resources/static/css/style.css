@@ -5,6 +5,7 @@
 body {
   margin-top: 11rem;
   height: 99vh;
+  background-color: rgba(3, 0, 7, 1);
   background-image: url("../images/heart.jpg");
   background-size: cover;
   color:aliceblue;

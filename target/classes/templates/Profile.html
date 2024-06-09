@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0" />
     <link rel="stylesheet" href="../css/style.css" />
@@ -21,24 +21,20 @@
   <body>
 
   <nav>
-      <select onchange="location = this.value;">
-          <option value="index">Select Page</option>
-          <option value="index">Home</option>
-          <option value="SearchForExtraterrestrialPartners">Search for Extraterrestrial Partners</option>
-          <option value="Profile">My Profile</option>
-      </select>
   </nav>
 
 
     
 <h1 id="title">
 </h1>
-    <div id="alienGrid" class="grid-container">
-    </div>
+
+  <div id="alienGrid" class="grid-container">
+  </div>
     <script type="module" src="../js/profiles.js">
     </script>
-    </script>
-    <blockquote class="quote">
+  <script type="module" src="../js/alienCards.js">
+  </script>
+
 
      <footer>
       <p>© 2024 Colette Bellard </p>
