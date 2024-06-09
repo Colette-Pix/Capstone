@@ -16,6 +16,12 @@ function createAlienCards(data) {
         `;
     bubble.addEventListener("click", rainbow);
     bubble.addEventListener("click", randomColorChange);
+    // Add event listener for navigation
+bubble.addEventListener("click", function() {
+  // Store the name of the clicked alien in the session storage
+  sessionStorage.setItem('alienName', item.name);
+  window.location.href = `/ProfileView?name=${encodeURIComponent(item.name)}`;
+});
     productGrid.appendChild(bubble);
   });
 }

@@ -1,4 +1,4 @@
-import data from "./data/profilesData.js";
+
 //needs AI plugin so aliens can talk to you
 function createAlienCards(data) {
   const productGrid = document.getElementById("alienGrid");
@@ -24,9 +24,22 @@ function createAlienCards(data) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  fetch('/Profile')
-    .then(response => response.json())
-    .then(data => createAlienCards(data));
+  const alienName = sessionStorage.getItem("alienName");
+fetch(`/getProfilesData?name=${encodeURIComponent(alienName)}`)
+  .then(response => {
+    if (!response.ok) {
+      // If the response is not ok, print out the response body as text
+      console.log("Error: not a json response");
+      response.text().then(text => console.log(text));
+    } else {
+      // If the response is ok, parse it as JSON
+            console.log(" a json response");
+      response.json().then(data => {
+        console.log("json response:" + data); // Print out the returned data
+        createAlienCards(data);
+      });
+    }
+  });
 });
 
 

@@ -5,7 +5,6 @@ window.onload = function() {
             <option value="index">Select Page</option>
             <option value="index">Home</option>
             <option value="SearchForExtraterrestrialPartners">Search for Extraterrestrial Partners</option>
-            <option value="ProfileView">My Profile</option>
         </select>
     </nav>
     `;

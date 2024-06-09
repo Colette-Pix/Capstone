@@ -23,6 +23,11 @@ public class UserService {
         return repository.findAll();
     }
 
+    public List<UserProfile> getProfilesByName(String name) {
+        System.out.println("Finding by Name: " + name);
+        return repository.findByName(name);
+    }
+
     // Add this method
     public void addProfile(String name, String headline, String message, String image) {
         UserProfile profile = new UserProfile();
@@ -41,15 +46,27 @@ public class UserService {
     // Add this method
     @PostConstruct
     public void addAlienProfiles() {
-
-/*        addProfile("Jeff Cthulu", "Eldritch God", "seeking cute human to take to the beach", "../images/cthulu.webp");
+        deleteAllProfiles();
+        addProfile("Jeff Cthulu", "Eldritch God", "seeking cute human to take to the beach", "../images/cthulu.webp");
         addProfile("Jeff Cthulu", "Are you a romantic?", "looking for someone to destroy worlds with under the moonlight", "../images/vampirerosecastle.jpg");
         addProfile("Jeff Cthulu", "These is my son, Bhoxelb, he who will devour the Sun.", "If you're not okay with that, swipe left", "../images/baby.webp");
 
         addProfile("Zilthora", "Do you like long walks on the beach?", "I'm a lifestyle blogger looking for someone to share my life with", "../images/beach.webp");
         addProfile("Zilthora", "Lorem Ipsum", "dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.", "../images/beach.webp");
         addProfile("Zilthora", "Insert Headline Here", "I'm a lifestyle blogger. My life is so interesting.", "../images/beach.webp");
-      */  // Add the rest of the profiles here
+
+        addProfile("Kyrnlerp Xron", "English Teacher", "In A Relationship", "../images/couple.webp");
+        addProfile("Rygaxor", "Destroyer of Worlds", "Single", "../images/giant.webp");
+        addProfile("The N'rirrf Collective", "All of the Above", "It's Complicated", "../images/hive.webp");
+        addProfile("We do not have labels", "Unemployed", "Single", "../images/elf.webp");
+        addProfile("L̶̥̗̙͍̘̮̝̟͚̖̦̠̲̲͕̉͊͛̓̽̊̈̇̍s̴̡̛̭̯̙̱̼̳͑́̎͑͒̈́̒̏̆̽́̚͠K̵͚̥͈͎̥͚̖̖͗͋̄̓̅̈́̓̑͛̊͂̐͂͘͠è̶̼͔̟̺̟͚̝̰͇̞̠͈̋̃̀̿̀̋͒͌̿̂͗͝ͅ╟̴̡͎͈͍̞̪̼̗̗͎̗͎̋̀̒̎̾͐̃̄̀̓̈̽́̕͜͝*̵̧̨̧́̏͆̆̄̄͛̉̐́̉̇͝͝d̵̻̗̼͍̭͔͐̓̇̎̅̃̈̄̆ ̶̞̲̀͒̿∞̸̨̙̖̜̟͉̻̖̰̫̱̜̙̍͆͆̒̂̿̌͗̍͌̂̚͝ͅ", "Neutrino Disentangler", "Beyond Human Comprehension", "../images/energy.webp");
+
+    }
+    public void deleteAllProfiles() {
+        repository.deleteAll();
+    }
+    public void deleteProfile(Integer id) {
+        repository.deleteById(id);
     }
 
 }
