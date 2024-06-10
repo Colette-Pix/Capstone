@@ -1,10 +1,11 @@
-package com.ColetteBellard.AlienDatingSite;
+package com.ColetteBellard.AlienDatingSite.EntityUserProfile;
 
+import com.ColetteBellard.AlienDatingSite.EntityHomeCard.HomeCard;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-//used for alien profiles
+
 @AllArgsConstructor
 @Data
 @Entity
@@ -17,7 +18,8 @@ public class UserProfile {
     private String headline;
     private String message;
     private String image;
-    //we would also add a foreign key for alien cards
 
-
+    @ManyToOne
+    @JoinColumn(name = "homeCardId", nullable = false)
+    private HomeCard homeCard;
 }

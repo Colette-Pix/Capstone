@@ -1,7 +1,7 @@
 package com.ColetteBellard.AlienDatingSite.mycontroller;
 
-import com.ColetteBellard.AlienDatingSite.UserProfile;
-import com.ColetteBellard.AlienDatingSite.UserService;
+import com.ColetteBellard.AlienDatingSite.EntityUserProfile.UserProfile;
+import com.ColetteBellard.AlienDatingSite.EntityUserProfile.UserProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,14 +10,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Controller
 public class ProfilesController {
-    private UserService userService;
+    private UserProfileService userService;
 
     @Autowired
-    public void UserProfileController(UserService userService) {
+    public void UserProfileController(UserProfileService userService) {
         this.userService = userService;
     }
 
