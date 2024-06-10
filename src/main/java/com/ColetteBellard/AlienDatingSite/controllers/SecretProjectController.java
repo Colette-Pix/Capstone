@@ -1,4 +1,4 @@
-package com.ColetteBellard.AlienDatingSite.mycontroller;
+package com.ColetteBellard.AlienDatingSite.controllers;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

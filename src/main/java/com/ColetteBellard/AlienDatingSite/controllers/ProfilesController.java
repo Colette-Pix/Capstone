@@ -1,4 +1,4 @@
-package com.ColetteBellard.AlienDatingSite.mycontroller;
+package com.ColetteBellard.AlienDatingSite.controllers;
 
 import com.ColetteBellard.AlienDatingSite.EntityUserProfile.UserProfile;
 import com.ColetteBellard.AlienDatingSite.EntityUserProfile.UserProfileService;

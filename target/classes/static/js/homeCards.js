@@ -8,7 +8,7 @@ function createAlienCards(data) {
     bubble.className = "card";
     bubble.innerHTML = `
             <div class="image-container">
-                <img src="${item.img}" alt="${item.name}">
+                <img src="${item.image}" alt="${item.name}">
             </div>
             <div class="details">
                 <h3><u>${item.name}</u> [${item.job}]- <i>${item.status}</i></h3>
@@ -27,7 +27,9 @@ bubble.addEventListener("click", function() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  createAlienCards(data);
+  fetch('/api/homecards')
+    .then(response => response.json())
+    .then(data => createAlienCards(data));
 });
 
 
