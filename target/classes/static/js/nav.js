@@ -5,6 +5,9 @@ window.onload = function() {
             <option value="index">Select Page</option>
             <option value="index">Home</option>
             <option value="SearchForExtraterrestrialPartners">Search for Extraterrestrial Partners</option>
+            <option value="system">System</option>
+            <option value="PROJECT">Secret Project</option>
+            <option value="access">Project Access</option>
         </select>
     </nav>
     `;

@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class AccessController {
-    int TestThing;
+
 
     @GetMapping("/access")
     public String sendDataToHtml(Model model) {
