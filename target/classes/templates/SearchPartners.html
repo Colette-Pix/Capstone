@@ -1,115 +1,90 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <!-- Alien Dating Site -->
+    <!--
+    Alien Dating Site
+    This is the main HTML file for the Alien Dating Site application.
+    It includes the necessary meta tags, links to the CSS stylesheet, and the main structure of the application.
+    -->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0" />
     <link rel="stylesheet" href="../css/style.css" />
 
-  <style>
-   
-    h1 {
-      color: white;
-      font-size: 3rem;
-      text-align: center;
-      font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-    }
-
-    input[type="text"],
-    input[type="number"],
-    select {
-      background-color: rgba(130, 228, 12, 0.9);
-      color: rgb(0, 0, 0);
-      padding: 0.5rem;
-      border: none;
-      border-radius: 0.25rem;
-      font-size: 1rem;
-      cursor: pointer;
-    }
-    #searchResultsContainer {
-      display: table;
-      width: 100%;
-      margin-top: 2rem;
-      margin-bottom: 2rem;
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-    #searchResultsContainer table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-
-    #searchResultsContainer th,
-    #searchResultsContainer td {
-      padding: 1rem;
-      text-align: left;
-      border-bottom: 1px solid #ccc;
-    }
-
-    #searchResultsContainer th {
-      background-color: rgba(130, 228, 12, 0.9);
-      font-weight: bold;
-      color:black
-    }
-
+    <!--
+    Internal CSS styles for the h1 element.
+    The color, font size, text alignment, and font family are set.
+    -->
+    <style>
+        h1 {
+            color: white;
+            font-size: 3rem;
+            text-align: center;
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+        }
     </style>
-
-
   </head>
   <body>
+    <!--
+    The navigation bar will be inserted here by the JavaScript code.
+    -->
+    <nav></nav>
 
-  <nav>
-  </nav>
+    <!--
+    The main heading of the application.
+    -->
+    <h1> Search For Extraterrestiral Partner
+    </h1>
 
-    
-<h1> Search For Extraterrestiral Partner
-</h1>
+    <!--
+    A form for the user to enter search criteria for extraterrestrial partners.
+    The form includes fields for the name, age, galaxy, search radius, interests, and species of the desired partner.
+    -->
+    <form id="searchForm">
+        <label for="nameOfAlien">Name:</label>
+        <input type="text" id="nameOfAlien" name="name" required>
+        <label for="age">Age:</label>
+        <input type="number" id="age" name="age" pattern="^[0-9]*$" min="18" required>
+        <label for="sector">Galaxy:</label>
+        <select id="sector" name="sector" required>
+            <option value="andromeda">Andromeda</option>
+            <option value="bearPaw">Bear Paw</option>
+            <option value="eyeOfSauron">Eye of Sauron</option>
+            <option value="medusa">Medusa</option>
+            <option value="milkyWay">Milky Way</option>
+            <option value="peekaboo">Peekaboo</option>
+            <option value="other">other</option>
+        </select>
+        <label for="searchRadius">Search Radius:</label>
+        <select id="searchRadius" name="searchRadius" required>
+            <option value=500000>500,000 Light Years</option>
+            <option value=1000000>1,000,000 Light Years</option>
+            <option value=2000000>2,000,000 Light Years</option>
+            <option value=5000000>5,000,000 Light Years</option>
+            <option value=10000000>10,000,000 Light Years</option>
+        </select>
+        <label for="interests">Interests:</label>
+        <input type="text" id="interests" name="interests" required></input>
+        <label for="species">Species:</label>
+        <input type="text" id="species" name="species" required></input>
+        <button id="searchButton" type="submit">Search</button>
+    </form>
 
-<form id="searchForm">
-  <label for="nameOfAlien">Name:</label>
-  <input type="text" id="nameOfAlien" name="name" required>
-  <label for="age">Age:</label>
-  <input type="number" id="age" name="age" pattern="^[0-9]*$" min="18" required>
+    <!--
+    A container for the search results. The search results will be inserted here by the JavaScript code.
+    -->
+    <div id="searchResultsContainer">  </div>
 
+    <!--
+    The JavaScript modules for handling the search functionality and the navigation bar are linked.
+    -->
+    <script type="module" src="../js/search.js"></script>
+    <script type="module" src="../js/nav.js"></script>
 
-  <label for="sector">Galaxy:</label>
-  <select id="sector" name="sector" required>
-    <option value="andromeda">Andromeda</option>
-    <option value="bearPaw">Bear Paw</option>
-    <option value="eyeOfSauron">Eye of Sauron</option>
-    <option value="medusa">Medusa</option>
-    <option value="milkyWay">Milky Way</option>
-    <option value="peekaboo">Peekaboo</option>
-    <option value="other">other</option>
-  </select>
-
-  
-  <label for="searchRadius">Search Radius:</label>
-  <select id="searchRadius" name="searchRadius" required>
-    <option value=500000>500,000 Light Years</option>
-    <option value=1000000>1,000,000 Light Years</option>
-    <option value=2000000>2,000,000 Light Years</option>
-    <option value=5000000>5,000,000 Light Years</option>
-    <option value=10000000>10,000,000 Light Years</option>
-  </select>
-
-  <label for="interests">Interests:</label>
-  <input type="text" id="interests" name="interests" required></input>
-
-  <label for="species">Species:</label>
-  <input type="text" id="species" name="species" required></input>
-
-  <button id="searchButton" type="submit">Search</button>
-</form>
-<div id="searchResultsContainer">  </div>
-
-<script type="module" src="../js/search.js"></script>
-  <script type="module" src="../js/nav.js">
-  </script>
-     <footer>
-      <p>© 2024 Colette Bellard </p>
-     </footer>
+    <!--
+    The footer of the application with a copyright notice.
+    -->
+    <footer>
+        <p>© 2024 Colette Bellard </p>
+    </footer>
   </body>
 </html>
-

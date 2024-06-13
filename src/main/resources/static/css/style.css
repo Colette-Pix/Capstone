@@ -1,3 +1,31 @@
+/*
+The CSS file for the Alien Dating Site application.
+
+The * selector is used to select all elements. The background-blend-mode property is set to soft-light, which blends the background images and colors of the elements with the colors of their parent elements.
+
+The body selector is used to style the body of the HTML document. The margin-top property is set to 11rem, the height property is set to 99vh (99% of the viewport height), the background-color property is set to rgba(3, 0, 7, 1) (a dark blue color), the background-image property is set to the URL of the background image, the background-size property is set to cover (the background image covers the entire body), the color property is set to aliceblue (a light blue color), and the font-family property is set to a list of fonts.
+
+The #alienGrid selector is used to style the element with the id "alienGrid". The display property is set to grid, the grid-template-columns property is set to repeat(auto-fill, minmax(400px, 1fr)) (the grid columns take up at least 400px and at most 1 fraction of the available space, and the grid automatically fills the available space with as many columns as it can), the gap property is set to 3rem (the gap between grid items is 3rem), the padding property is set to 1rem, the justify-content property is set to center (the grid items are centered along the row axis), the max-width property is set to 1800px, and the grid-auto-rows property is set to 400px (the height of the grid rows is 400px).
+
+The div > .card selector is used to style the elements with the class "card" that are direct children of a div element. The background-image property is set to the URL of the background image, the background-blend-mode property is set to lighten (the background image is blended with the background color of the element to create a lighter effect), the display property is set to flex, the flex-direction property is set to row, the align-items property is set to space-between (there is space between the flex items along the cross axis), the padding property is set to 55px, the border-radius property is set to 330px (the corners of the element are rounded), the transition property is set to all 0.3s ease (all properties of the element transition over a duration of 0.3 seconds with an ease timing function), the box-shadow property is set to inset 0 0 10px 5px rgba(130, 228, 12, 0.9), inset -5px -5px 10px blue (the element has an inner shadow that is 10px wide and 5px high with a color of rgba(130, 228, 12, 0.9), and an inner shadow that is -5px wide and -5px high with a color of blue), and the color property is set to white.
+
+The .select selector is used to style the elements with the class "select". The background-image property is set to the URL of the background image, the background-color property is set to rgba(130, 228, 12, 0.9) (a green color with 90% opacity), the border-radius property is set to 330px, the padding property is set to 10px, the margin property is set to 10px, the color property is set to white, the font-size property is set to 1.5rem, and the font-family property is set to a list of fonts.
+
+The .card:hover selector is used to style the elements with the class "card" when they are hovered over. The scale property is set to 1.1 (the element is scaled up to 110% of its original size), the box-shadow property is set to 0 0 20px 5px rgba(130, 228, 12, 0.9) (the element has a shadow that is 20px wide and 5px high with a color of rgba(130, 228, 12, 0.9)), and the filter property is set to invert(100%) (the colors of the element are inverted).
+
+The .image-container selector is used to style the elements with the class "image-container". The height property is set to 100%, the width property is set to auto, the justify-content property is set to space-between (there is space between the flex items along the main axis), and the align-items property is set to center (the flex items are centered along the cross axis).
+
+The .image-container * selector is used to style all elements that are descendants of an element with the class "image-container". The width property is set to 100%, the height property is set to auto, and the border-radius property is set to 333px (the corners of the elements are rounded).
+
+The .quote selector is used to style the elements with the class "quote". The color property is set to rgba(130, 228, 12, 0.9), the font-size property is set to 1.5rem, the font-style property is set to italic, the margin-top property is set to 1rem, the align-items property is set to center (the flex items are centered along the cross axis), the justify-content property is set to center (the flex items are centered along the main axis), and the font-family property is set to a list of fonts.
+
+The nav selector is used to style the nav elements. The background-image property is set to the URL of the background image, the padding property is set to 1rem, the display property is set to flex, the justify-content property is set to center (the flex items are centered along the main axis), and the align-items property is set to center (the flex items are centered along the cross axis).
+
+The nav select selector is used to style the select elements inside a nav element. The background-color property is set to rgba(130, 228, 12, 0.9), the color property is set to rgb(0, 0, 0), the padding property is set to 0.5rem, the border property is set to none, the border-radius property is set to 0.25rem, the font-size property is set to 1rem, and the cursor property is set to pointer (the cursor changes to a pointer when hovering over the select element).
+
+The nav select option selector is used to style the option elements inside a select element inside a nav element. The background-color property is set to rgba(130, 228, 12, 0.9), and the color property is set to rgb(0, 0, 0).
+*/
+
 *{
   background-blend-mode: soft-light;
 }
@@ -12,7 +40,7 @@ body {
   font-family: Impact, comic sans, 'Arial Narrow Bold', sans-serif,'comic sans ms', 'comic sans', cursive;
 }
 
- 
+
 
 #alienGrid {
     display: grid;
@@ -53,7 +81,7 @@ body {
     box-shadow: 0 0 20px 5px rgba(130, 228, 12, 0.9);
     filter: invert(100%);
 
-  } 
+  }
   .image-container {
     height: 100%;
     width: auto;
@@ -61,7 +89,7 @@ body {
     align-items: center;
 ;
   }
-  
+
   /*images*/
   .image-container * {
     width: 100%;
@@ -103,7 +131,7 @@ body {
 
   }
 
-  
+
 
 
 

@@ -3,8 +3,6 @@ const context = canvas.getContext('2d');
 
 context.scale(40, 40);
 // The snake object
-// The snake object
-
 const arena = createMatrix(12, 20);
 
 const player = {
@@ -30,7 +28,6 @@ function resetSnake() {
 
 let snakeSpeed= 200;
 let snakeCounter= 0;
-// Update the snake's position
 // Update the snake's position
 function updateSnake() {
     // Add the current position to the body
@@ -317,15 +314,16 @@ function update(time = 0) {
 
     requestAnimationFrame(update);
 }
-
+let passwordObtained = false;
 function updateScore() {
     document.getElementById('score').innerText = player.score;
 
     // Check if the score has reached 30
-    if (player.score >= 30) {
+    if (player.score >= 30 && !passwordObtained) {
         // Display a message with the password
         alert('YOU HAVE REACHED THE REQUIRED POINT THRESHOLD.' +
          'ACCESS HAS BEEN GRANTED. THE PASSWORD IS: "PASSWORD"');
+        passwordObtained = true;
     }
 }
 

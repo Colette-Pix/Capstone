@@ -5,28 +5,63 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * HomeCardService is a service class for managing HomeCard entities.
+ * It uses HomeCardRepository to interact with the database.
+ */
 @Service
 public class HomeCardService {
     private final HomeCardRepository repository;
 
+    /**
+     * Constructs a new HomeCardService with the given HomeCardRepository.
+     *
+     * @param repository the HomeCardRepository to use for database interaction
+     */
     @Autowired
     public HomeCardService(HomeCardRepository repository) {
         this.repository = repository;
     }
 
+    /**
+     * Saves the given HomeCard entity to the database.
+     *
+     * @param entity the HomeCard entity to save
+     * @return the saved HomeCard entity
+     */
     public HomeCard save(HomeCard entity) {
         return repository.save(entity);
     }
 
+    /**
+     * Retrieves all HomeCard profiles from the database.
+     *
+     * @return a list of all HomeCard profiles
+     */
     public List<HomeCard> getAllProfiles() {
         return repository.findAll();
     }
 
+    /**
+     * Retrieves HomeCard profiles with the given name from the database.
+     *
+     * @param name the name of the HomeCard profiles to retrieve
+     * @return a list of HomeCard profiles with the given name
+     */
     public List<HomeCard> getProfilesByName(String name) {
         System.out.println("Finding by Name: " + name);
         return repository.findByName(name);
     }
 
+    /**
+     * Adds a new HomeCard profile with the given details to the database.
+     *
+     * @param name the name of the new HomeCard profile
+     * @param headline the job of the new HomeCard profile
+     * @param message the status of the new HomeCard profile
+     * @param resonance the resonance of the new HomeCard profile
+     * @param image the image of the new HomeCard profile
+     */
     public void addProfile(String name, String headline, String message, String resonance, String image) {
         HomeCard homeCard = new HomeCard();
         homeCard.setName(name);
@@ -37,9 +72,10 @@ public class HomeCardService {
         save(homeCard);
     }
 
-
-
-    //this method is called from UserProfileService in the @PostConstruct method
+    /**
+     * Adds a set of default HomeCard profiles to the database.
+     * This method is called from UserProfileService in the @PostConstruct method.
+     */
     public void addHomeCards() {
         save(new HomeCard(1, "Zilthora", "Lifestyle Blogger", "Single", "Inactive", "../images/beach.webp"));
         save(new HomeCard(2, "Kyrnlerp Xron", "English Teacher", "In A Relationship", "Inactive", "../images/couple.webp"));
@@ -51,8 +87,12 @@ public class HomeCardService {
     }
 
 
-    public void deleteAllHomeCards() {
-        repository.deleteAll();
-    }
+/**
+ * This method is used to delete all HomeCards from the database.
+ * It calls the deleteAll method of the HomeCardRepository.
+ */
+public void deleteAllHomeCards() {
+    repository.deleteAll();
+}
 
 }

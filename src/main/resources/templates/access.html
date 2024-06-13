@@ -1,9 +1,19 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <!--
+    The character encoding for the HTML document is set to UTF-8.
+    The viewport is set to the width of the device, the height of the device, and the initial zoom level is set to 1.0.
+    The CSS stylesheet for the application is linked.
+    -->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0" />
     <link rel="stylesheet" href="../css/style.css" />
+
+    <!--
+    Internal CSS styles for input elements of type "text" and "number", and select elements.
+    The background color, text color, padding, border, border radius, font size, and cursor style are set.
+    -->
     <style>
         input[type="text"],
         input[type="number"],
@@ -19,14 +29,26 @@
     </style>
 </head>
 <body>
+<!--
 The player will have to navigate through a series of clues and riddles to reach this page,
 however for this demo, you can simply use the nav dropbox.
+-->
 <nav></nav>
+
+    <!--
+    A form for the user to enter the access password.
+    The form uses a POST method and the action is set to the "/access" endpoint.
+    The form contains a label for the password input field, a password input field, and a submit button.
+    -->
     <form action="#" th:action="@{/access}" method="post">
         <label th:text="${passwordLabel}"></label><br>
         <input type="password" id="password" name="password"><br>
         <input type="submit" value="Submit">
     </form>
+
+    <!--
+    The JavaScript module for the navigation bar is linked.
+    -->
     <script type="module" src="../js/nav.js">
     </script>
 </body>

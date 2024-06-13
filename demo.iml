@@ -95,6 +95,7 @@
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.springframework.boot:spring-boot-devtools:3.3.0" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot:3.3.0" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-autoconfigure:3.3.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: com.h2database:h2:2.2.224" level="project" />
     <orderEntry type="library" name="Maven: org.hibernate.orm:hibernate-core:6.5.2.Final" level="project" />
     <orderEntry type="library" name="Maven: jakarta.persistence:jakarta.persistence-api:3.1.0" level="project" />
     <orderEntry type="library" name="Maven: jakarta.transaction:jakarta.transaction-api:2.0.1" level="project" />

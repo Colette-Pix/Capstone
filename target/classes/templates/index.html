@@ -1,39 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <!-- Alien Dating Site -->
+    <!--
+    Alien Dating Site
+    This is the main HTML file for the Alien Dating Site application.
+    It includes the necessary meta tags, links to the CSS stylesheet, and the main structure of the application.
+    -->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0" />
     <link rel="stylesheet" href="../css/style.css" />
 
   <style>
-
+    <!--
+    This internal CSS styles the h1 element.
+    -->
     h1 {
       color: white;
       font-size: 3rem;
       text-align: center;
       font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
     }
-  
-    </style>
   </style>
 
   </head>
   <body>
-
+    <!--
+    The navigation bar will be inserted here by the JavaScript code.
+    -->
     <nav>
     </nav>
 
+    <!--
+    The main heading of the application.
+    -->
+    <h1>🪐<span style="color: pink;">♥</span> Intergalactic Matchmaker<span style="color: pink;">♥</span>🪐
+    </h1>
 
-
-<h1>🪐<span style="color: pink;">♥</span> Intergalactic Matchmaker<span style="color: pink;">♥</span>🪐
-</h1>
+    <!--
+    The grid container where the alien cards will be inserted by the JavaScript code.
+    -->
     <div id="alienGrid" class="grid-container">
     </div>
+
+    <!--
+    The JavaScript modules for creating the alien cards and the navigation bar.
+    -->
     <script type="module" src="../js/homeCards.js">
     </script>
     <script type="module" src="../js/nav.js">
     </script>
+
+    <!--
+    A quote about the universe.
+    -->
     <blockquote class="quote">
       <p>
         "The universe is a pretty big place. If it's just us, seems like an awful
@@ -41,19 +60,18 @@
       </p>
       <p>—Carl Sagan</p>
     </blockquote>
-      <!--
-    <script>
-      window.addEventListener('beforeunload', function() {
-        var audio = document.querySelector('audio');
-        audio.pause();
-        audio.currentTime = 0;
-      });
- -->
 
-     <audio src="../music/spacemusic.mp3" autoplay loop></audio>
-     <footer>
+    <!--
+    The audio element for playing background music.
+    The music file is located in the "music" folder and the audio will autoplay and loop.
+    -->
+    <audio src="../music/spacemusic.mp3" autoplay loop></audio>
+
+    <!--
+    The footer of the application with a copyright notice.
+    -->
+    <footer>
       <p>© 2024 Colette Bellard </p>
-     </footer>
+    </footer>
   </body>
 </html>
-

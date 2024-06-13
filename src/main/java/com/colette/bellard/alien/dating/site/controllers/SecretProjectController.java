@@ -3,8 +3,20 @@ package com.colette.bellard.alien.dating.site.controllers;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+
+/**
+ * Controller for handling requests to the secret project page.
+ */
 @Controller
 public class SecretProjectController {
+
+    /**
+     * Handles GET requests to the /PROJECT endpoint.
+     * Sends data to the SecretProject.html view.
+     *
+     * @param model the Model object to bind data to the view
+     * @return the name of the view to render
+     */
     @GetMapping("/PROJECT")
     public String sendDataToHtml(Model model) {
         final String secret = "ऌऀࣽࢸࣛइआऎࣽऊࣿࣽआࣻࣝࢸँऋࢸ࣭ईइआࢸ࣭ऋࣆࢸऌऀࣽࢸࣤँआࣽ࣫ࢸएँऄऄࢸࣛइआऎࣽऊࣿࣽࢸएऀࣽआࢸࣨऋँइआँࣻࢸ࣪ࣽऋइआࣹआࣻࣽࢸࣥࣽࣽऌऋࢸऌऀࣽࢸࣹ࣠ऊअइ" +
@@ -28,7 +40,6 @@ public class SecretProjectController {
                 " that. The future your species hangs in the balance, and the fate of [REDACTED] rests in your " +
                 "hands. <br/><br/> Most importantly, make sure you NEVER ";
         model.addAttribute("hint", hint);
-
         return "SecretProject";
     }
 }

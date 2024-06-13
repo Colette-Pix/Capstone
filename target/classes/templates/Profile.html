@@ -1,44 +1,55 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
+    <!--
+    The character encoding for the HTML document is set to UTF-8.
+    The viewport is set to the width of the device, the height of the device, and the initial zoom level is set to 1.0.
+    The CSS stylesheet for the application is linked.
+    -->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0" />
     <link rel="stylesheet" href="../css/style.css" />
 
-  <style>
-
-    h1 {
-      color: white;
-      font-size: 3rem;
-      text-align: center;
-      font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-    }
- 
+    <!--
+    Internal CSS styles for the h1 element.
+    The color, font size, text alignment, and font family are set.
+    -->
+    <style>
+        h1 {
+            color: white;
+            font-size: 3rem;
+            text-align: center;
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+        }
     </style>
-  </style>
+</head>
+<body>
+    <!--
+    The navigation bar will be inserted here by the JavaScript code.
+    -->
+    <nav></nav>
 
-  </head>
-  <body>
+    <!--
+    The main heading of the application.
+    -->
+    <h1 id="title"></h1>
 
-  <nav>
-  </nav>
+    <!--
+    The grid container where the alien profile cards will be inserted by the JavaScript code.
+    -->
+    <div id="alienGrid" class="grid-container"></div>
 
+    <!--
+    The JavaScript modules for creating the alien profile cards and the navigation bar are linked.
+    -->
+    <script type="module" src="../js/profiles.js"></script>
+    <script type="module" src="../js/nav.js"></script>
 
-    
-<h1 id="title">
-</h1>
-
-  <div id="alienGrid" class="grid-container">
-  </div>
-    <script type="module" src="../js/profiles.js">
-    </script>
-  <script type="module" src="../js/nav.js">
-  </script>
-
-
-     <footer>
-      <p>© 2024 Colette Bellard </p>
-     </footer>
-  </body>
+    <!--
+    The footer of the application with a copyright notice.
+    -->
+    <footer>
+        <p>© 2024 Colette Bellard </p>
+    </footer>
+</body>
 </html>
-
