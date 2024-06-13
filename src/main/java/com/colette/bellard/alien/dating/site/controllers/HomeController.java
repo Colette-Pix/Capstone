@@ -16,7 +16,7 @@ import java.util.List;
 public class HomeController {
 
     private final HomeCardService homeCardService;
-
+    private final String homeCards = "/api/homecards";
     /**
      * Constructs a HomeController with the specified HomeCardService.
      *
@@ -33,7 +33,7 @@ public class HomeController {
      *
      * @return a list of all HomeCard entities
      */
-    @GetMapping("/api/homecards")
+    @GetMapping(homeCards)
     public List<HomeCard> getHomeCards() {
         return homeCardService.getAllProfiles();
     }

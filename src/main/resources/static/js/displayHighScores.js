@@ -13,4 +13,4 @@ window.addEventListener('load', function() {
         // Append the high scores list to the div
         displayHighScoresDiv.appendChild(highScoresList);
     });
-}); 
+});

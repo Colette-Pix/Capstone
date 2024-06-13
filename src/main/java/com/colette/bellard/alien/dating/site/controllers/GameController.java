@@ -12,13 +12,13 @@ import java.util.List;
 public class GameController {
 
     private final GameDataService gameDataService;
-
+    private final String gameData="/api/gameData";
     @Autowired
     public GameController(GameDataService gameDataService) {
         this.gameDataService = gameDataService;
     }
 
-    @GetMapping("/api/gameData")
+    @GetMapping(gameData)
     public List<GameData> getAllGameData() {
         return gameDataService.getAllGameData();
     }
