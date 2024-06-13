@@ -1,5 +1,6 @@
-package com.colette.bellard.alien.dating.site.entity.user.profile;
+package com.colette.bellard.alien.dating.site.repository;
 
+import com.colette.bellard.alien.dating.site.entity.UserProfile;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

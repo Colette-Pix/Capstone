@@ -1,8 +1,8 @@
 // Java
 package com.colette.bellard.alien.dating.site.controllers;
 
-import com.colette.bellard.alien.dating.site.entity.home.card.HomeCard;
-import com.colette.bellard.alien.dating.site.entity.home.card.HomeCardService;
+import com.colette.bellard.alien.dating.site.entity.HomeCard;
+import com.colette.bellard.alien.dating.site.services.HomeCardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;

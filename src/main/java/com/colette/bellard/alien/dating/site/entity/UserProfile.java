@@ -1,6 +1,6 @@
-package com.colette.bellard.alien.dating.site.entity.user.profile;
+package com.colette.bellard.alien.dating.site.entity;
 
-import com.colette.bellard.alien.dating.site.entity.home.card.HomeCard;
+import com.colette.bellard.alien.dating.site.entity.HomeCard;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;

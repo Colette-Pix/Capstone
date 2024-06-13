@@ -1,7 +1,7 @@
 package com.colette.bellard.alien.dating.site.controllers;
 
-import com.colette.bellard.alien.dating.site.entity.user.profile.UserProfile;
-import com.colette.bellard.alien.dating.site.entity.user.profile.UserProfileService;
+import com.colette.bellard.alien.dating.site.entity.UserProfile;
+import com.colette.bellard.alien.dating.site.services.UserProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

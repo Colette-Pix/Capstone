@@ -1,10 +1,11 @@
-package com.colette.bellard.alien.dating.site.entity.user.profile;
+package com.colette.bellard.alien.dating.site.services;
 
-import com.colette.bellard.alien.dating.site.entity.home.card.HomeCard;
-import com.colette.bellard.alien.dating.site.entity.home.card.HomeCardRepository;
-import com.colette.bellard.alien.dating.site.entity.home.card.HomeCardService;
+import com.colette.bellard.alien.dating.site.entity.HomeCard;
+import com.colette.bellard.alien.dating.site.entity.UserProfile;
+import com.colette.bellard.alien.dating.site.repository.HomeCardRepository;
+import com.colette.bellard.alien.dating.site.repository.UserProfileRepository;
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -110,7 +111,6 @@ public class UserProfileService {
      *  to be cleared every time the application starts, remove the @PostConstruct annotation
      *  and in application.properties set spring.jpa.hibernate.ddl-auto=update
      */
-
     //@PostConstruct
     public void firstTimeSetup() {
         homeCardService.addHomeCards(); //the relations is many Profiles to one HomeCard, so we need to add the HomeCards first
