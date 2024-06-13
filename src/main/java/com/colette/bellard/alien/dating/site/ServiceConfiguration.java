@@ -1,6 +1,6 @@
 package com.colette.bellard.alien.dating.site;
 
-import com.colette.bellard.alien.dating.site.repository.UserProfileRepository;
+import com.colette.bellard.alien.dating.site.repositories.UserProfileRepository;
 import com.colette.bellard.alien.dating.site.services.UserProfileService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

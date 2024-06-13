@@ -1,7 +1,7 @@
 package com.colette.bellard.alien.dating.site.services;
 
-import com.colette.bellard.alien.dating.site.entity.HomeCard;
-import com.colette.bellard.alien.dating.site.repository.HomeCardRepository;
+import com.colette.bellard.alien.dating.site.models.HomeCard;
+import com.colette.bellard.alien.dating.site.repositories.HomeCardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

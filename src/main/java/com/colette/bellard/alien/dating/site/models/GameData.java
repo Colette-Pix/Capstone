@@ -1,6 +1,5 @@
-package com.colette.bellard.alien.dating.site.entity;
+package com.colette.bellard.alien.dating.site.models;
 
-import com.colette.bellard.alien.dating.site.entity.HomeCard;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,7 +14,7 @@ import lombok.NoArgsConstructor;
 @Data
 @Entity
 @NoArgsConstructor
-public class UserProfile {
+public class GameData {
     /**
      * The unique identifier for a UserProfile. It is automatically generated.
      */
@@ -28,27 +27,9 @@ public class UserProfile {
      */
     private String name;
 
-    /**
-     * The headline of the user's profile.
-     */
-    private String headline;
+    private int highScore;
 
-    /**
-     * The message of the user's profile.
-     */
-    private String message;
-
-    /**
-     * The image of the user's profile.
-     */
-    private String image;
-
-    /**
-     * The HomeCard associated with the user's profile.
-     * It is annotated with @ManyToOne, indicating that each UserProfile is associated with one HomeCard.
-     * The @JoinColumn annotation indicates that the 'homeCardId' column is used for the foreign key.
-     */
     @ManyToOne
-    @JoinColumn(name = "homeCardId", nullable = false)
+    @JoinColumn(name = "gameDataId", nullable = false)
     private HomeCard homeCard;
 }

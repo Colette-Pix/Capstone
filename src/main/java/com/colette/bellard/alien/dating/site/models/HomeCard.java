@@ -1,4 +1,4 @@
-package com.colette.bellard.alien.dating.site.entity;
+package com.colette.bellard.alien.dating.site.models;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

@@ -329,14 +329,15 @@ function updateScore() {
 
 const colors = [
     null,
-    '#FF0D72',
-    '#0DC2FF',
-    '#0DFF72',
-    '#F538FF',
-    '#FF8E0D',
-    '#FFE138',
-    '#3877FF',
-    '8b31ff'
+    '#FF0D72', // T
+    '#0DC2FF', // J
+    '#0DFF72', // O
+    '#F538FF', // L
+    '#FF8E0D', // I
+    '#FFE138', // S
+    '#3877FF', // Z
+    '8b31ff',   // C
+    '#ffffff', // Snake
 ];
 
 

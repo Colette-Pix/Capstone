@@ -3,10 +3,11 @@
  * It creates a navigation bar with a dropdown menu that allows the user to navigate to different pages.
  * The navigation bar is inserted at the beginning of the body of the document.
  */
-window.onload = function() {
+ window.addEventListener('load', function() {
     // The HTML for the navigation bar
     var navbar = `
     <nav>
+
         <!-- The dropdown menu -->
         <select onchange="location = this.value;">
             <!-- The default option -->
@@ -27,4 +28,4 @@ window.onload = function() {
 
     // Insert the navigation bar at the beginning of the body of the document
     document.body.insertAdjacentHTML('afterbegin', navbar);
-}
+});

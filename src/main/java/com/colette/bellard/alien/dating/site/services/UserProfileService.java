@@ -1,10 +1,10 @@
 package com.colette.bellard.alien.dating.site.services;
 
-import com.colette.bellard.alien.dating.site.entity.HomeCard;
-import com.colette.bellard.alien.dating.site.entity.UserProfile;
-import com.colette.bellard.alien.dating.site.repository.HomeCardRepository;
-import com.colette.bellard.alien.dating.site.repository.UserProfileRepository;
-import jakarta.annotation.PostConstruct;
+import com.colette.bellard.alien.dating.site.models.HomeCard;
+import com.colette.bellard.alien.dating.site.models.UserProfile;
+import com.colette.bellard.alien.dating.site.repositories.HomeCardRepository;
+import com.colette.bellard.alien.dating.site.repositories.UserProfileRepository;
+import jakarta.annotation.PostConstruct; //do not remove this import
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -14,13 +14,21 @@ import java.util.List;
  * It uses UserProfileRepository for database operations.
  */
 public class UserProfileService {
+
     private final UserProfileRepository repository;
+
 
     @Autowired
     private HomeCardRepository homeCardRepository;
 
     @Autowired
+    private AlienService alienService;
+
+    @Autowired
     private HomeCardService homeCardService;
+
+    @Autowired
+    private GameDataService gameDataService;
 
     /**
      * Constructor for UserProfileService. Initializes the repository.
@@ -115,7 +123,7 @@ public class UserProfileService {
     public void firstTimeSetup() {
         homeCardService.addHomeCards(); //the relations is many Profiles to one HomeCard, so we need to add the HomeCards first
         addAlienProfiles();
-
-
+        gameDataService.populateDb();
+        alienService.populateDb();
     }
 }
