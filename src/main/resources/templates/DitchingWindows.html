@@ -1,0 +1,1326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ditching Windows: The Game</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      font-family: 'Courier New', monospace;
+      background-color: #1e1e1e;
+      color: #f0f0f0;
+    }
+    
+    #game-container {
+      position: relative;
+      width: 800px;
+      height: 600px;
+      margin: 20px auto;
+      background-color: #333;
+      border: 3px solid #555;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    }
+    
+    #game-canvas {
+      width: 100%;
+      height: 100%;
+    }
+    
+    #ui-overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 10px;
+      background-color: rgba(0, 0, 0, 0.7);
+      z-index: 10;
+      display: flex;
+      justify-content: space-between;
+    }
+    
+    #score {
+      font-size: 18px;
+      color: #4fc3f7;
+    }
+    
+    #windows-left {
+      font-size: 18px;
+      color: #4caf50;
+    }
+    
+    #reshade-meter {
+      font-size: 18px;
+      color: #ff9800;
+    }
+    
+    #timer {
+      font-size: 18px;
+      color: #f44336;
+      font-weight: bold;
+    }
+    
+    #migration-container {
+      position: absolute;
+      top: 10px;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: center;
+      z-index: 5;
+    }
+    
+    #migration-meter {
+      width: 60%;
+      height: 20px;
+      background-color: #424242;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 2px solid #555;
+    }
+    
+    #migration-progress {
+      height: 100%;
+      background-color: #4caf50;
+      width: 0%;
+      transition: width 0.3s;
+    }
+    
+    #messages {
+      position: absolute;
+      top: 10px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      font-size: 24px;
+      color: #ff5722;
+      z-index: 20;
+    }
+    
+    #title-screen {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background-color: rgba(0, 0, 0, 0.8);
+      z-index: 30;
+    }
+    
+    #title-screen h1 {
+      color: #4fc3f7;
+      font-size: 42px;
+      margin-bottom: 20px;
+      text-shadow: 0 0 10px #2196f3;
+    }
+    
+    #title-screen p {
+      color: #f0f0f0;
+      margin: 10px 0;
+      font-size: 18px;
+    }
+    
+    #start-button {
+      margin-top: 40px;
+      padding: 15px 30px;
+      font-size: 20px;
+      background-color: #4caf50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    
+    #start-button:hover {
+      background-color: #45a049;
+    }
+
+    #game-over {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background-color: rgba(0, 0, 0, 0.8);
+      z-index: 25;
+    }
+
+    #game-over h2 {
+      color: #ff5722;
+      font-size: 48px;
+      margin-bottom: 20px;
+    }
+
+    #final-score {
+      color: #4fc3f7;
+      font-size: 24px;
+      margin-bottom: 40px;
+    }
+
+    #restart-button {
+      padding: 15px 30px;
+      font-size: 20px;
+      background-color: #f44336;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    #restart-button:hover {
+      background-color: #d32f2f;
+    }
+  </style>
+</head>
+<body>
+  <div id="game-container">
+    <canvas id="game-canvas"></canvas>
+    
+    <div id="migration-container">
+      <div id="migration-meter">
+        <div id="migration-progress"></div>
+      </div>
+    </div>
+    
+    <div id="ui-overlay">
+      <div id="timer">Time: 60s</div>
+      <div id="score">Score: 0</div>
+      <div id="windows-left">Windows Left: 10</div>
+      <div id="reshade-meter">ReShade: 0%</div>
+    </div>
+    
+    <div id="messages"></div>
+    
+    <div id="title-screen">
+      <h1>Ditching Windows: The Game</h1>
+      <p>Play as Jess trying to remove all Windows while dealing with Bugbears and Proton</p>
+      <p>Use arrow keys to move, SPACE to remove windows</p>
+      <p>Collect green Flatpacks to charge ReShade</p>
+      <p>Press R to use ReShade when charged to 100%</p>
+      <p>Watch out for:</p>
+      <p>- Blocked windows can ONLY be removed with ReShade</p>
+      <p>- Bugbears (red) block windows - you must use ReShade to remove them</p>
+      <p>- Proton (purple) permanently damages windows making ReShade ineffective</p>
+      <p>- Bugbears can't affect Proton-damaged windows</p>
+      <p>- You have 2 extra windows - you can afford to lose 2 windows to Proton</p>
+      <p>- When Proton damages a window, a new Bugbear spawns!</p>
+      <p>- Removing windows adds time to your countdown</p>
+      <p>- Complete the OS Migration meter to win!</p>
+      <button id="start-button">Start Game</button>
+    </div>
+
+    <div id="game-over">
+      <h2>Game Over!</h2>
+      <div id="final-score">Score: 0</div>
+      <button id="restart-button">Try Again</button>
+    </div>
+  </div>
+
+  <script>
+    // Game elements
+    const canvas = document.getElementById('game-canvas');
+    const ctx = canvas.getContext('2d');
+    const titleScreen = document.getElementById('title-screen');
+    const startButton = document.getElementById('start-button');
+    const gameOverScreen = document.getElementById('game-over');
+    const restartButton = document.getElementById('restart-button');
+    const scoreDisplay = document.getElementById('score');
+    const windowsLeftDisplay = document.getElementById('windows-left');
+    const reshadeDisplay = document.getElementById('reshade-meter');
+    const messagesDisplay = document.getElementById('messages');
+    const timerDisplay = document.getElementById('timer');
+    const migrationProgress = document.getElementById('migration-progress');
+
+    // Set canvas dimensions
+    canvas.width = 800;
+    canvas.height = 600;
+
+    // Game variables
+    let gameActive = false;
+    let score = 0;
+    let windowsLeft = 10;
+    let totalWindows = 10;
+    let reshadeCharge = 0;
+    let lastFrameTime = 0;
+    let messageTimer = 0;
+    let timeRemaining = 60; // 60 seconds timer
+    let migrationPercent = 0; // OS Migration progress
+
+    // Player
+    const player = {
+      x: canvas.width / 2,
+      y: canvas.height / 2,
+      width: 40,
+      height: 60,
+      speed: 200,
+      color: '#8B4513', // Brown
+      hair: '#000000', // Black hair
+      hairStyle: 'floop', // Floopy hair that goes out to the sides
+      ears: true, // Bear ears
+      reshadeActive: false,
+      reshadeTimer: 0,
+      reshadeColor: '#ff9800'
+    };
+    
+    // Flatpacks (for ReShade energy)
+    const flatpacks = [];
+
+    // Bugbear template
+    const bugbear = {
+      x: canvas.width * 0.75,
+      y: canvas.height * 0.25,
+      width: 60,
+      height: 80,
+      speed: 100,
+      color: '#f44336',
+      targetWindow: null,
+      changeTargetTimer: 0,
+      visible: true
+    };
+    
+    // Array to hold all bugbears
+    let bugbears = [bugbear];
+    
+    // Proton
+    const proton = {
+      x: canvas.width * 0.25,
+      y: canvas.height * 0.75,
+      radius: 30,
+      speed: 70,
+      color: '#673ab7',
+      targetWindow: null,
+      changeTargetTimer: 0
+    };
+
+    // Windows
+    const windows = [];
+    const windowWidth = 60;
+    const windowHeight = 80;
+
+    // Walls
+    const walls = [
+      // Outer walls only
+      { x: 50, y: 50, width: canvas.width - 100, height: 20 },    // Top
+      { x: 50, y: canvas.height - 70, width: canvas.width - 100, height: 20 }, // Bottom
+      { x: 50, y: 50, width: 20, height: canvas.height - 120 },   // Left
+      { x: canvas.width - 70, y: 50, width: 20, height: canvas.height - 120 }, // Right
+    ];
+    
+    // Game initialization
+    function initGame() {
+      // Reset game state
+      gameActive = true;
+      score = 0;
+      windowsLeft = 12;
+      totalWindows = 12;
+      requiredWindows = 10;
+      reshadeCharge = 0;
+      timeRemaining = 30; // Reduced to 30 seconds from 60
+      migrationPercent = 0;
+      gameOverTimer = 0;
+      
+      // Reset player position - in the center of a room, away from walls
+      player.x = 350;
+      player.y = 200;
+      player.reshadeActive = false;
+      player.reshadeTimer = 0;
+      
+      // Reset bugbear
+      bugbear.x = canvas.width * 0.75;
+      bugbear.y = canvas.height * 0.25;
+      bugbear.targetWindow = null;
+      bugbear.changeTargetTimer = 0;
+      bugbear.visible = true; // Ensure bugbear is always visible for first game
+      
+      // Clear bugbears array and add initial one
+      bugbears = [bugbear];
+      
+      // Reset proton
+      proton.x = canvas.width * 0.25;
+      proton.y = canvas.height * 0.75;
+      proton.targetWindow = null;
+      proton.changeTargetTimer = 0;
+      
+      // Clear existing windows and create new ones
+      windows.length = 0;
+      createWindows();
+      
+      // Clear and create new flatpacks
+      flatpacks.length = 0;
+      createFlatpacks(5); // Create 5 initial flatpacks
+      
+      // Update UI
+      updateUI();
+      
+      // Hide title screen
+      titleScreen.style.display = 'none';
+      gameOverScreen.style.display = 'none';
+      
+      // Start game loop
+      lastFrameTime = performance.now();
+      requestAnimationFrame(gameLoop);
+    }
+    
+    // Create flatpacks
+    function createFlatpacks(count) {
+      for (let i = 0; i < count; i++) {
+        // Find a valid position for the flatpack
+        let x, y;
+        let validPosition = false;
+        
+        while (!validPosition) {
+          x = Math.random() * (canvas.width - 150) + 75;
+          y = Math.random() * (canvas.height - 150) + 75;
+          
+          // Make sure it's not inside a wall
+          if (!checkWallCollision(x, y, 30, 30)) {
+            validPosition = true;
+            
+            // Also check it's not too close to other flatpacks
+            for (const pack of flatpacks) {
+              const distance = Math.sqrt(Math.pow(pack.x - x, 2) + Math.pow(pack.y - y, 2));
+              if (distance < 60) { // Minimum distance between flatpacks
+                validPosition = false;
+                break;
+              }
+            }
+          }
+        }
+        
+        flatpacks.push({
+          x: x,
+          y: y,
+          width: 30,
+          height: 30,
+          charge: 25 // Each flatpack gives 25% reshade charge
+        });
+      }
+    }
+
+    // Create windows
+    function createWindows() {
+      // Create windows positioned along the walls
+      const windowPositions = [
+        // Top wall windows
+        { x: 100, y: 70, side: 'top' },
+        { x: 250, y: 70, side: 'top' },
+        { x: 400, y: 70, side: 'top' },
+        { x: 550, y: 70, side: 'top' },
+        
+        // Left wall windows
+        { x: 70, y: 150, side: 'left' },
+        { x: 70, y: 300, side: 'left' },
+        
+        // Right wall windows
+        { x: canvas.width - 70 - windowWidth, y: 150, side: 'right' },
+        { x: canvas.width - 70 - windowWidth, y: 300, side: 'right' },
+        
+        // Bottom wall windows
+        { x: 150, y: canvas.height - 70 - windowHeight, side: 'bottom' },
+        { x: 450, y: canvas.height - 70 - windowHeight, side: 'bottom' },
+        
+        // Additional windows (2 more than needed)
+        { x: 300, y: 70, side: 'top' },
+        { x: 300, y: canvas.height - 70 - windowHeight, side: 'bottom' },
+      ];
+      
+      // Create windows at these locations
+      windowPositions.forEach(pos => {
+        windows.push({
+          x: pos.x,
+          y: pos.y,
+          width: windowWidth,
+          height: windowHeight,
+          color: '#2196f3',
+          blockedBy: null,
+          protonDamaged: false,
+          side: pos.side
+        });
+      });
+      
+      // Update total windows count
+      totalWindows = windows.length;
+      windowsLeft = totalWindows;
+      // Set the required windows to fill the meter (total - 2)
+      requiredWindows = totalWindows - 2;
+    }
+
+    // Game loop
+    function gameLoop(timestamp) {
+      if (!gameActive) return;
+      
+      // Calculate delta time
+      const deltaTime = (timestamp - lastFrameTime) / 1000;
+      lastFrameTime = timestamp;
+      
+      // Update timer
+      updateTimer(deltaTime);
+      
+      // Update game over timer if active
+      if (gameOverTimer > 0) {
+        gameOverTimer -= deltaTime;
+        if (gameOverTimer <= 0) {
+          endGame(false, "Failed to complete OS migration!");
+          return;
+        }
+      }
+      
+      // Clear canvas
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      
+      // Draw walls first (background)
+      drawWalls();
+      
+      // Update
+      updatePlayer(deltaTime);
+      updateAllBugbears(deltaTime);
+      updateProton(deltaTime);
+      updateWindows();
+      updateFlatpacks();
+      updateMessages(deltaTime);
+      
+      // Draw game elements
+      drawWindows();
+      drawFlatpacks();
+      drawPlayer();
+      bugbears.forEach(bug => {
+        if (bug.visible) {
+          drawBugbear(bug);
+        }
+      });
+      drawProton();
+      
+      // UI updates
+      updateUI();
+      
+      // Continue loop
+      requestAnimationFrame(gameLoop);
+    }
+    
+    // Update flatpacks
+    function updateFlatpacks() {
+      // Check for player collision with flatpacks
+      for (let i = flatpacks.length - 1; i >= 0; i--) {
+        const pack = flatpacks[i];
+        
+        // Check if player collects the flatpack
+        if (
+          player.x + player.width > pack.x &&
+          player.x < pack.x + pack.width &&
+          player.y + player.height > pack.y &&
+          player.y < pack.y + pack.height
+        ) {
+          // Collect the flatpack
+          reshadeCharge = Math.min(100, reshadeCharge + pack.charge);
+          flatpacks.splice(i, 1);
+          showMessage(`Collected flatpack! ReShade: ${Math.floor(reshadeCharge)}%`);
+          
+          // Add score
+          score += 50;
+          
+          // Spawn a new flatpack when one is collected
+          if (Math.random() < 0.7) { // 70% chance to spawn a new one
+            createFlatpacks(1);
+          }
+        }
+      }
+      
+      // If there are too few flatpacks, spawn more
+      if (flatpacks.length < 3 && Math.random() < 0.01) {
+        createFlatpacks(1);
+      }
+    }
+    
+    // Draw flatpacks
+    function drawFlatpacks() {
+      flatpacks.forEach(pack => {
+        // Draw flatpack box
+        ctx.fillStyle = '#8bc34a'; // Green color for flatpacks
+        ctx.fillRect(pack.x, pack.y, pack.width, pack.height);
+        
+        // Draw flatpack logo
+        ctx.fillStyle = '#fff';
+        ctx.font = '14px Arial';
+        ctx.fillText('F', pack.x + pack.width / 2 - 4, pack.y + pack.height / 2 + 5);
+        
+        // Draw flatpack glow effect
+        ctx.beginPath();
+        ctx.arc(pack.x + pack.width / 2, pack.y + pack.height / 2, 20, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(139, 195, 74, 0.2)';
+        ctx.fill();
+      });
+    }
+    
+    // Update timer
+    function updateTimer(deltaTime) {
+      timeRemaining -= deltaTime;
+      
+      // Format the timer
+      const seconds = Math.max(0, Math.floor(timeRemaining));
+      timerDisplay.textContent = `Time: ${seconds}s`;
+      
+      // Check for timeout
+      if (timeRemaining <= 0) {
+        endGame(false, "Time's up!");
+      }
+    }
+
+    // Update player
+    function updatePlayer(deltaTime) {
+      // Handle reshade ability
+      if (player.reshadeActive) {
+        player.reshadeTimer -= deltaTime;
+        if (player.reshadeTimer <= 0) {
+          player.reshadeActive = false;
+          showMessage("ReShade deactivated");
+        }
+      }
+      // ReShade no longer charges over time
+      
+      // Check for window removal
+      if (keys.space) {
+        keys.space = false; // Consume the keypress
+        
+        for (let i = 0; i < windows.length; i++) {
+          const win = windows[i];
+          
+          // Check if player is near the window
+          if (
+            player.x + player.width > win.x &&
+            player.x < win.x + win.width &&
+            player.y + player.height > win.y &&
+            player.y < win.y + win.height
+          ) {
+            // Check if window is blocked by any bugbear
+            if (win.blockedBy) {
+              if (player.reshadeActive) {
+                // Reshade allows bypassing bugbear
+                removeWindow(i);
+                showMessage("Window removed with ReShade!");
+                score += 200;
+                timeRemaining += 5; // Add 5 seconds to timer
+                // Set target to null for the bugbear that was blocking
+                if (win.blockedBy.targetWindow === win) {
+                  win.blockedBy.targetWindow = null;
+                }
+                // Spawn a flatpack 25% of the time when removing a blocked window
+                if (Math.random() < 0.25) {
+                  createFlatpacks(1);
+                }
+              } else {
+                showMessage("Window blocked by Bugbear! Use ReShade (R)");
+              }
+            } else if (win.protonDamaged) {
+              // Proton damaged windows can't be removed with ReShade
+              if (player.reshadeActive) {
+                showMessage("ReShade doesn't work on Proton-damaged Windows!");
+              } else {
+                // Can still remove but it's harder
+                if (Math.random() < 0.5) {
+                  removeWindow(i);
+                  showMessage("Proton-damaged Window removed with difficulty!");
+                  score += 150;
+                  timeRemaining += 3; // Add 3 seconds to timer
+                } else {
+                  showMessage("Failed to remove Proton-damaged Window. Try again!");
+                }
+              }
+            } else {
+              // Normal window removal
+              removeWindow(i);
+              showMessage("Window removed!");
+              score += 100;
+              timeRemaining += 7; // Add 7 seconds to timer
+            }
+            break;
+          }
+        }
+      }
+      
+      // Activate reshade
+      if (keys.r && !player.reshadeActive && reshadeCharge >= 100) {
+        player.reshadeActive = true;
+        player.reshadeTimer = 5; // 5 seconds of reshade
+        reshadeCharge = 0;
+        showMessage("ReShade activated!");
+      }
+      
+      // Movement
+      const moveSpeed = player.speed * deltaTime;
+      
+      // Calculate new position
+      let newX = player.x;
+      let newY = player.y;
+      
+      if (keys.left) newX -= moveSpeed;
+      if (keys.right) newX += moveSpeed;
+      if (keys.up) newY -= moveSpeed;
+      if (keys.down) newY += moveSpeed;
+      
+      // Check for wall collisions and update position
+      if (!checkWallCollision(newX, player.y, player.width, player.height)) {
+        player.x = newX;
+      }
+      
+      if (!checkWallCollision(player.x, newY, player.width, player.height)) {
+        player.y = newY;
+      }
+      
+      // Ensure player stays in bounds
+      player.x = Math.max(0, Math.min(canvas.width - player.width, player.x));
+      player.y = Math.max(0, Math.min(canvas.height - player.height, player.y));
+    }
+    
+    // Check for wall collision with safety buffer
+    function checkWallCollision(x, y, width, height) {
+      // Add a small buffer around objects to prevent getting stuck in walls
+      const buffer = 2;
+      
+      for (const wall of walls) {
+        if (
+          x + width - buffer > wall.x + buffer &&
+          x + buffer < wall.x + wall.width - buffer &&
+          y + height - buffer > wall.y + buffer &&
+          y + buffer < wall.y + wall.height - buffer
+        ) {
+          return true; // Collision detected
+        }
+      }
+      return false; // No collision
+    }
+
+    // Update all bugbears
+    function updateAllBugbears(deltaTime) {
+      bugbears.forEach(bug => updateBugbear(bug, deltaTime));
+    }
+    
+    // Update a single bugbear
+    function updateBugbear(bug, deltaTime) {
+      // Update target change timer
+      bug.changeTargetTimer -= deltaTime;
+      
+      // Choose a new target if needed
+      if (bug.targetWindow === null || bug.changeTargetTimer <= 0) {
+        if (windows.length > 0) {
+          const targetIndex = Math.floor(Math.random() * windows.length);
+          bug.targetWindow = windows[targetIndex];
+          bug.changeTargetTimer = 5 + Math.random() * 5; // 5-10 seconds
+        }
+      }
+      
+      // Move towards target window
+      if (bug.targetWindow) {
+        const targetX = bug.targetWindow.x + bug.targetWindow.width / 2 - bug.width / 2;
+        const targetY = bug.targetWindow.y + bug.targetWindow.height / 2 - bug.height / 2;
+        
+        const dx = targetX - bug.x;
+        const dy = targetY - bug.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        
+        if (distance > 5) {
+          // Calculate next position
+          const newX = bug.x + (dx / distance) * bug.speed * deltaTime;
+          const newY = bug.y + (dy / distance) * bug.speed * deltaTime;
+          
+          // Check for wall collisions
+          if (!checkWallCollision(newX, newY, bug.width, bug.height)) {
+            bug.x = newX;
+            bug.y = newY;
+          } else {
+            // If collision, try moving just horizontally
+            if (!checkWallCollision(newX, bug.y, bug.width, bug.height)) {
+              bug.x = newX;
+            } 
+            // Or just vertically
+            else if (!checkWallCollision(bug.x, newY, bug.width, bug.height)) {
+              bug.y = newY;
+            }
+            // If both directions are blocked, the bugbear is stuck and will wait for a new target
+          }
+        }
+      }
+    }
+    
+    // Spawn a new bugbear
+    function spawnBugbear() {
+      // Find a valid spawn position
+      let spawnX, spawnY;
+      let validPosition = false;
+      let attempts = 0;
+      
+      while (!validPosition && attempts < 50) {
+        attempts++;
+        spawnX = Math.random() * (canvas.width - 150) + 75;
+        spawnY = Math.random() * (canvas.height - 170) + 75;
+        
+        // Check if position is valid (not inside a wall and not too close to player)
+        const distanceToPlayer = Math.sqrt(
+          Math.pow(spawnX - player.x, 2) + 
+          Math.pow(spawnY - player.y, 2)
+        );
+        
+        validPosition = !checkWallCollision(spawnX, spawnY, bugbear.width, bugbear.height) && 
+                        distanceToPlayer > 150; // Keep bugbears away from player spawn
+      }
+      
+      // If no valid position found after max attempts, use a safe fallback position
+      if (!validPosition) {
+        // Try some hardcoded safe positions
+        const safePositions = [
+          { x: 100, y: 100 },
+          { x: 600, y: 100 },
+          { x: 100, y: 400 },
+          { x: 600, y: 400 }
+        ];
+        
+        // Find first position that doesn't collide with walls
+        for (const pos of safePositions) {
+          if (!checkWallCollision(pos.x, pos.y, bugbear.width, bugbear.height)) {
+            spawnX = pos.x;
+            spawnY = pos.y;
+            validPosition = true;
+            break;
+          }
+        }
+        
+        // If still no valid position, don't spawn a new bugbear
+        if (!validPosition) {
+          showMessage("Bugbear couldn't find a way in!");
+          return;
+        }
+      }
+      
+      // Create new bugbear
+      const newBugbear = {
+        x: spawnX,
+        y: spawnY,
+        width: bugbear.width,
+        height: bugbear.height,
+        speed: bugbear.speed,
+        color: bugbear.color,
+        targetWindow: null,
+        changeTargetTimer: 0,
+        visible: true
+      };
+      
+      bugbears.push(newBugbear);
+      showMessage("A new Bugbear appeared!");
+    }
+    
+    // Update proton
+    function updateProton(deltaTime) {
+      // Update target change timer
+      proton.changeTargetTimer -= deltaTime;
+      
+      // Choose a new target if needed
+      if (proton.targetWindow === null || proton.changeTargetTimer <= 0) {
+        if (windows.length > 0) {
+          const targetIndex = Math.floor(Math.random() * windows.length);
+          proton.targetWindow = windows[targetIndex];
+          proton.changeTargetTimer = 7 + Math.random() * 7; // 7-14 seconds
+        }
+      }
+      
+      // Move towards target window
+      if (proton.targetWindow) {
+        const targetX = proton.targetWindow.x + proton.targetWindow.width / 2;
+        const targetY = proton.targetWindow.y + proton.targetWindow.height / 2;
+        
+        const dx = targetX - proton.x;
+        const dy = targetY - proton.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        
+        if (distance > 5) {
+          proton.x += (dx / distance) * proton.speed * deltaTime;
+          proton.y += (dy / distance) * proton.speed * deltaTime;
+        }
+      }
+    }
+
+    // Update windows
+    function updateWindows() {
+      // Reset blocked status
+      windows.forEach(win => {
+        win.blockedBy = null;
+      });
+      
+      // Check for bugbear blocking
+      bugbears.forEach(bug => {
+        if (bug.visible) {
+          for (let i = 0; i < windows.length; i++) {
+            const win = windows[i];
+            
+            // Bugbears shouldn't affect windows damaged by Proton
+            if (!win.protonDamaged) {
+              // Check if bugbear is near the window
+              if (
+                bug.x + bug.width > win.x &&
+                bug.x < win.x + win.width &&
+                bug.y + bug.height > win.y &&
+                bug.y < win.y + win.height
+              ) {
+                win.blockedBy = bug;
+              }
+            }
+          }
+        }
+      });
+      
+      // Check for proton affecting windows
+      for (let i = 0; i < windows.length; i++) {
+        const win = windows[i];
+        
+        // Calculate center points
+        const winCenterX = win.x + win.width / 2;
+        const winCenterY = win.y + win.height / 2;
+        
+        // Check if proton is near the window
+        const dx = winCenterX - proton.x;
+        const dy = winCenterY - proton.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        
+        if (distance < proton.radius + Math.min(win.width, win.height) / 2) {
+          if (!win.protonDamaged) {
+            win.protonDamaged = true;
+            win.color = '#8d6e63'; // Damaged window color
+            win.blockedBy = null; // Remove any bugbear blocking when proton damages
+            showMessage("Window damaged by Proton!");
+            spawnBugbear(); // Spawn a new bugbear when Proton damages a window
+          }
+        }
+      }
+    }
+
+    // Remove a window
+    function removeWindow(index) {
+      windows.splice(index, 1);
+      windowsLeft--;
+      
+      // Check for game end
+      if (windows.length === 0) {
+        endGame(true);
+      }
+    }
+
+    // Update message display
+    function updateMessages(deltaTime) {
+      if (messageTimer > 0) {
+        messageTimer -= deltaTime;
+        if (messageTimer <= 0) {
+          messagesDisplay.textContent = '';
+        }
+      }
+    }
+
+    // Show a message
+    function showMessage(text) {
+      messagesDisplay.textContent = text;
+      messageTimer = 2; // Show for 2 seconds
+    }
+
+    // Update UI elements
+    function updateUI() {
+      scoreDisplay.textContent = `Score: ${score}`;
+      windowsLeftDisplay.textContent = `Windows Left: ${windowsLeft}`;
+      reshadeDisplay.textContent = `ReShade: ${Math.floor(reshadeCharge)}%${player.reshadeActive ? ' ACTIVE!' : ''}`;
+      
+      // Cap time display to avoid negative times
+      const seconds = Math.max(0, Math.floor(timeRemaining));
+      timerDisplay.textContent = `Time: ${seconds}s`;
+      
+      // Force-update migration meter width with the correct percentage
+      migrationPercent = Math.min(100, Math.round(((totalWindows - windowsLeft) / requiredWindows) * 100));
+      migrationProgress.style.width = `${migrationPercent}%`;
+      
+      // Add color gradient based on progress
+      if (migrationPercent < 25) {
+        migrationProgress.style.backgroundColor = '#f44336'; // Red
+      } else if (migrationPercent < 50) {
+        migrationProgress.style.backgroundColor = '#ff9800'; // Orange
+      } else if (migrationPercent < 75) {
+        migrationProgress.style.backgroundColor = '#ffeb3b'; // Yellow
+      } else {
+        migrationProgress.style.backgroundColor = '#4caf50'; // Green
+      }
+      
+      // If game over timer is active, make the UI flash
+      if (gameOverTimer > 0) {
+        if (Math.floor(gameOverTimer * 5) % 2 === 0) {
+          migrationProgress.style.backgroundColor = '#f44336'; // Red flashing
+        } else {
+          migrationProgress.style.backgroundColor = '#880000'; // Dark red flashing
+        }
+      }
+    }
+    
+    // End the game
+    function endGame(victory, message = "") {
+      gameActive = false;
+      
+      if (victory) {
+        score += 1000; // Victory bonus
+        showMessage("OS Migration Complete! Victory!");
+        document.getElementById('final-score').textContent = `Final Score: ${score} - Complete Migration!`;
+      } else {
+        showMessage(message || "Game Over!");
+        document.getElementById('final-score').textContent = `Final Score: ${score} - Migration Progress: ${Math.floor(migrationPercent)}%`;
+      }
+      
+      gameOverScreen.style.display = 'flex';
+    }
+
+    // Draw player
+    function drawPlayer() {
+      // Draw body
+      ctx.fillStyle = player.reshadeActive ? player.reshadeColor : player.color;
+      ctx.fillRect(player.x, player.y, player.width, player.height);
+      
+      // Draw floopy hair that goes out to the sides
+      ctx.fillStyle = player.hair;
+      
+      // Top of hair
+      ctx.fillRect(player.x - 5, player.y - 5, player.width + 10, 15);
+      
+      // Side floops - bigger ones that extend outward
+      ctx.beginPath();
+      // Left floop
+      ctx.moveTo(player.x - 5, player.y + 5);
+      ctx.quadraticCurveTo(player.x - 20, player.y + 20, player.x - 15, player.y + 40);
+      ctx.lineTo(player.x, player.y + 35);
+      ctx.lineTo(player.x, player.y + 10);
+      ctx.fill();
+      
+      // Right floop
+      ctx.beginPath();
+      ctx.moveTo(player.x + player.width + 5, player.y + 5);
+      ctx.quadraticCurveTo(player.x + player.width + 20, player.y + 20, player.x + player.width + 15, player.y + 40);
+      ctx.lineTo(player.x + player.width, player.y + 35);
+      ctx.lineTo(player.x + player.width, player.y + 10);
+      ctx.fill();
+      
+      // Draw bear ears
+      if (player.ears) {
+        // Left ear - rounded
+        ctx.beginPath();
+        ctx.fillStyle = player.color;
+        ctx.arc(player.x + 10, player.y - 5, 8, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // Inner left ear
+        ctx.beginPath();
+        ctx.fillStyle = '#FFB7C5'; // Pink inner ear
+        ctx.arc(player.x + 10, player.y - 5, 4, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // Right ear - rounded
+        ctx.beginPath();
+        ctx.fillStyle = player.color;
+        ctx.arc(player.x + player.width - 10, player.y - 5, 8, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // Inner right ear
+        ctx.beginPath();
+        ctx.fillStyle = '#FFB7C5'; // Pink inner ear
+        ctx.arc(player.x + player.width - 10, player.y - 5, 4, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      
+      // Draw face
+      ctx.fillStyle = '#000';
+      ctx.fillRect(player.x + player.width * 0.25, player.y + player.height * 0.2, 5, 5);
+      ctx.fillRect(player.x + player.width * 0.65, player.y + player.height * 0.2, 5, 5);
+      
+      // Draw mouth
+      if (player.reshadeActive) {
+        // Smile when reshade active
+        ctx.beginPath();
+        ctx.arc(player.x + player.width / 2, player.y + player.height * 0.6, 10, 0, Math.PI);
+        ctx.stroke();
+      } else {
+        ctx.fillRect(player.x + player.width * 0.3, player.y + player.height * 0.6, player.width * 0.4, 3);
+      }
+    }
+
+    // Draw bugbear
+    function drawBugbear(bug) {
+      ctx.fillStyle = bug.color;
+      ctx.fillRect(bug.x, bug.y, bug.width, bug.height);
+      
+      // Draw face
+      ctx.fillStyle = '#000';
+      ctx.fillRect(bug.x + bug.width * 0.2, bug.y + bug.height * 0.2, 8, 8);
+      ctx.fillRect(bug.x + bug.width * 0.6, bug.y + bug.height * 0.2, 8, 8);
+      
+      // Draw angry mouth
+      ctx.beginPath();
+      ctx.moveTo(bug.x + bug.width * 0.3, bug.y + bug.height * 0.7);
+      ctx.lineTo(bug.x + bug.width * 0.7, bug.y + bug.height * 0.7);
+      ctx.lineWidth = 3;
+      ctx.strokeStyle = '#000';
+      ctx.stroke();
+      
+      // Draw horns
+      ctx.fillStyle = '#8B4513';
+      ctx.beginPath();
+      ctx.moveTo(bug.x + bug.width * 0.2, bug.y);
+      ctx.lineTo(bug.x + bug.width * 0.1, bug.y - 15);
+      ctx.lineTo(bug.x + bug.width * 0.3, bug.y);
+      ctx.fill();
+      
+      ctx.beginPath();
+      ctx.moveTo(bug.x + bug.width * 0.8, bug.y);
+      ctx.lineTo(bug.x + bug.width * 0.9, bug.y - 15);
+      ctx.lineTo(bug.x + bug.width * 0.7, bug.y);
+      ctx.fill();
+    }
+    
+    // Draw walls
+    function drawWalls() {
+      ctx.fillStyle = '#795548'; // Brown wall color
+      
+      walls.forEach(wall => {
+        ctx.fillRect(wall.x, wall.y, wall.width, wall.height);
+        
+        // Add wood grain texture
+        ctx.strokeStyle = '#5D4037';
+        ctx.lineWidth = 1;
+        
+        if (wall.width > wall.height) {
+          // Horizontal wall
+          for (let x = wall.x + 5; x < wall.x + wall.width; x += 10) {
+            ctx.beginPath();
+            ctx.moveTo(x, wall.y + 2);
+            ctx.lineTo(x, wall.y + wall.height - 2);
+            ctx.stroke();
+          }
+        } else {
+          // Vertical wall
+          for (let y = wall.y + 5; y < wall.y + wall.height; y += 10) {
+            ctx.beginPath();
+            ctx.moveTo(wall.x + 2, y);
+            ctx.lineTo(wall.x + wall.width - 2, y);
+            ctx.stroke();
+          }
+        }
+      });
+    }
+
+    // Draw windows
+    function drawWindows() {
+      windows.forEach(win => {
+        // Draw window frame
+        if (win.blockedBy) {
+          ctx.fillStyle = '#ff5722'; // Blocked window
+        } else if (win.protonDamaged) {
+          ctx.fillStyle = '#8d6e63'; // Proton damaged window
+        } else {
+          ctx.fillStyle = win.color; // Normal window
+        }
+        ctx.fillRect(win.x, win.y, win.width, win.height);
+        
+        // Draw window panes with different styles based on side
+        ctx.fillStyle = win.protonDamaged ? '#aaa' : '#ddd';
+        
+        if (win.side === 'top' || win.side === 'bottom') {
+          // Horizontal window
+          ctx.fillRect(win.x + 5, win.y + 5, win.width / 3 - 7, win.height - 10);
+          ctx.fillRect(win.x + win.width / 3 + 2, win.y + 5, win.width / 3 - 4, win.height - 10);
+          ctx.fillRect(win.x + 2 * win.width / 3 + 2, win.y + 5, win.width / 3 - 7, win.height - 10);
+        } else {
+          // Vertical window
+          ctx.fillRect(win.x + 5, win.y + 5, win.width - 10, win.height / 3 - 7);
+          ctx.fillRect(win.x + 5, win.y + win.height / 3 + 2, win.width - 10, win.height / 3 - 4);
+          ctx.fillRect(win.x + 5, win.y + 2 * win.height / 3 + 2, win.width - 10, win.height / 3 - 7);
+        }
+        
+        // Draw Windows logo or status indicator
+        if (win.blockedBy) {
+          ctx.fillStyle = '#000';
+          ctx.font = '20px Arial';
+          ctx.fillText('!', win.x + win.width / 2 - 5, win.y + win.height / 2 + 5);
+        } else if (win.protonDamaged) {
+          ctx.fillStyle = '#000';
+          ctx.font = '20px Arial';
+          ctx.fillText('P', win.x + win.width / 2 - 5, win.y + win.height / 2 + 5);
+        } else {
+          ctx.fillStyle = '#000';
+          ctx.font = '10px Arial';
+          ctx.fillText('W', win.x + win.width / 2 - 15, win.y + win.height / 2 + 5);
+        }
+        
+        // Add cracks to proton damaged windows
+        if (win.protonDamaged) {
+          ctx.strokeStyle = '#333';
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.moveTo(win.x + 10, win.y + 10);
+          ctx.lineTo(win.x + win.width - 10, win.y + win.height - 10);
+          ctx.stroke();
+          
+          ctx.beginPath();
+          ctx.moveTo(win.x + win.width - 10, win.y + 10);
+          ctx.lineTo(win.x + 10, win.y + win.height - 10);
+          ctx.stroke();
+        }
+      });
+    }
+    
+    // Draw proton
+    function drawProton() {
+      // Draw circle
+      ctx.fillStyle = proton.color;
+      ctx.beginPath();
+      ctx.arc(proton.x, proton.y, proton.radius, 0, Math.PI * 2);
+      ctx.fill();
+      
+      // Draw plus/cross
+      ctx.strokeStyle = '#fff';
+      ctx.lineWidth = 4;
+      
+      // Horizontal line
+      ctx.beginPath();
+      ctx.moveTo(proton.x - proton.radius / 2, proton.y);
+      ctx.lineTo(proton.x + proton.radius / 2, proton.y);
+      ctx.stroke();
+      
+      // Vertical line
+      ctx.beginPath();
+      ctx.moveTo(proton.x, proton.y - proton.radius / 2);
+      ctx.lineTo(proton.x, proton.y + proton.radius / 2);
+      ctx.stroke();
+    }
+
+    // Keyboard input
+    const keys = {
+      left: false,
+      right: false,
+      up: false,
+      down: false,
+      space: false,
+      r: false
+    };
+
+    window.addEventListener('keydown', e => {
+      switch (e.key) {
+        case 'ArrowLeft':
+        case 'a':
+          keys.left = true;
+          break;
+        case 'ArrowRight':
+        case 'd':
+          keys.right = true;
+          break;
+        case 'ArrowUp':
+        case 'w':
+          keys.up = true;
+          break;
+        case 'ArrowDown':
+        case 's':
+          keys.down = true;
+          break;
+        case ' ':
+          keys.space = true;
+          break;
+        case 'r':
+        case 'R':
+          keys.r = true;
+          break;
+      }
+    });
+
+    window.addEventListener('keyup', e => {
+      switch (e.key) {
+        case 'ArrowLeft':
+        case 'a':
+          keys.left = false;
+          break;
+        case 'ArrowRight':
+        case 'd':
+          keys.right = false;
+          break;
+        case 'ArrowUp':
+        case 'w':
+          keys.up = false;
+          break;
+        case 'ArrowDown':
+        case 's':
+          keys.down = false;
+          break;
+        case ' ':
+          keys.space = false;
+          break;
+        case 'r':
+        case 'R':
+          keys.r = false;
+          break;
+      }
+    });
+
+    // Event listeners
+    function setupEventListeners() {
+      // Start button event listeners - multiple methods for better compatibility
+      startButton.addEventListener('click', initGame);
+      startButton.addEventListener('touchstart', initGame);
+      document.getElementById('start-button').onclick = initGame;
+
+      // Restart button event listeners
+      restartButton.addEventListener('click', initGame);
+      restartButton.addEventListener('touchstart', initGame);
+      document.getElementById('restart-button').onclick = initGame;
+
+      // Add a global click handler to the entire game container
+      document.getElementById('game-container').addEventListener('click', function(e) {
+        // If we clicked the start button and the game isn't active, start it
+        if (!gameActive && e.target.id === 'start-button') {
+          initGame();
+        }
+        // If we clicked the restart button, restart the game
+        if (e.target.id === 'restart-button') {
+          initGame();
+        }
+      });
+
+      // Add touchstart event for mobile compatibility
+      document.getElementById('game-container').addEventListener('touchstart', function(e) {
+        // If we tapped the start button and the game isn't active, start it
+        if (!gameActive && e.target.id === 'start-button') {
+          initGame();
+        }
+        // If we tapped the restart button, restart the game
+        if (e.target.id === 'restart-button') {
+          initGame();
+        }
+      });
+    }
+
+    // Automatically start a new game after a short delay when the page loads
+    window.addEventListener('load', function() {
+      console.log('Game loaded completely');
+      
+      // Setup all event listeners
+      setupEventListeners();
+
+      // Add a message to indicate loading is complete
+      showMessage("Game loaded! Click Start Game to begin.");
+    });
+
+    // Add a fallback for Google Sites iframe issues
+    window.addEventListener('message', function(event) {
+      if (event.data === 'startGame') {
+        initGame();
+      }
+    });
+  </script>
+</body>
+</html>
